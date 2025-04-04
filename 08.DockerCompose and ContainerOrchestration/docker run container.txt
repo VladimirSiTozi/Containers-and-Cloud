@@ -1,0 +1,7 @@
+docker run --name ls-server -p 80:8080 -d lightstreamer:latest
+
+docker run --name ghost-container -p 3001:2368 NODE_ENV=development -d ghost:latest
+
+docker run --name my-apache-app -v %cd%:/usr/local/apache2/htdocs/ -p 8089:80 httpd:latest
+
+docker run -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=yourStrongPassword12# -p 1433:1433 -v sqldata:/var/opt/mssql -d mcr.microsoft.com/mssql/server

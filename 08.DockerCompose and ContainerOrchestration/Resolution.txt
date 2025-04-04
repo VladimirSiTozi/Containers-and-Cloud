@@ -1,0 +1,192 @@
+1)
+docker run -dit --name wordpress_db -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=wordpressdb -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress --expose 3306 --expose 33060 --network my_network -v %cd%/data:/var/lib/mysql mysql
+
+docker run -dit --name wordpress-website -e WORDPRESS_DB_HOST=wordpress_db -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_NAME=wordpressdb -v %cd%/wp-data:/var/www/html -p 80:80 --network my_network wordpress
+
+
+
+
+docker run -dit --name wordpress_db -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=wordpressdb -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress --expose 3306 --expose 33060 --network my_network -v db_data:/var/lib/mysql mysql
+
+docker run -dit --name wordpress-website -e WORDPRESS_DB_HOST=wordpress_db -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_NAME=wordpressdb -v wp-data:/var/www/html -p 80:80 --network my_network wordpress
+
+
+
+2)
+docker run -d --name mariadb -e MARIADB_USER=example-user -e MARIADB_PASSWORD=my_cool_secret -e MARIADB_DATABASE=example-database -e MARIADB_ROOT_PASSWORD=my-secret-pw --network maria_network mariadb:latest
+
+docker run -it --network maria_network --rm mariadb mariadb -hmariadb -uexample-user -p
+
+3)
+docker build -t drakumir/tracker .
+
+docker login
+
+docker push drakumir/tracker
+
+docker run -d -p 80:80 drakumir/tracker
+
+
+4)
+docker network create taskboard_network
+
+docker volume create sqldata
+
+docker run -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=yourStrongPassword12# -p 1433:1433 -v sqldata:/var/opt/mssql --rm --network taskboard_network --name sqlserver -d mcr.microsoft.com/mssql/server
+
+docker build -t taskboard -f TaskBoard.WebApp\Dockerfile .
+
+docker run -d -p 5000:80 --name web_app --network taskboard_network taskboard 
+
+
+5)
+- Create two network
+docker network create react-express
+docker network create express-mongo
+
+
+- Create Images
+-- Backend (from the IDE backend location)
+docker build -t backend_image .
+
+-- Frontend (from the IDE frontend location)
+docker build -t frontend_image .
+
+-- Mongo (from CMD; Get the image from DockerHub)
+docker pull mongo
+
+
+- Create containers 
+-- Mongo
+docker run -d --name mongo --network express-mongo -v .\data:/data/db mongo
+
+-- Backend
+docker run -d --name backend --network express-mongo --network react-express backend_image
+
+-- Frontend
+docker run -d --name frontend --network react-express -p 3000:3000 frontend_image
+
+
+- Open CMD from the location folder
+-- Run the 3 container images
+
+- Check the networks  
+docker network ls
+docker network inspect react-express
+docker network inspect express-mongo
+
+7)
+Missed exercise
+
+
+8)
+- Build the Java app (from CMD into the location)
+mvn clean package -DskipTests
+
+- Open with VSC
+
+- Create Dockerfile
+-- From Image
+FROM openjdk:11-jre-slim
+
+LABEL maintainer="Vlado Vladov"
+
+ARG JAR_FILE=target/*.jar 
+COPY ${JAR_FILE}} app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT [ "java", "-jar", "/app.jar" ]
+
+
+-- from CMD into the location
+-- Create a image
+docker build -t reseller .
+
+
+- Add docker-compose file
+services:
+  resellerapp:
+    image: reseller
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/resellerdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME: root
+      - SPRING_DATASOURCE_PASSWORD: my-secret-pw
+    networks:
+      - backend
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD: my-secret-pw
+      - MYSQL_DATABASE: resellerdb
+      - MYSQL_USER: user
+      - MYSQL_PASSWORD: userpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  mysql-data:
+
+
+- Run docker-compose file
+docker compose build
+docker login (if needed)
+docker compose up -d
+
+
+9)
+- Create Dockerfile
+FROM python:3.8-slim-buster
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . /app/
+
+RUN mkdir /app/staticfiles
+
+COPY static /app/staticfiles
+
+EXPOSE 8000
+
+CMD ["gunicorn", "SimplePageApp.wsgi:application", "-bind", "0.0.0.0:8000"] 
+
+
+# Build the image
+docker build -t simplepage .
+
+# Run the container
+docker run -d -p 8000:8080 --name simplepageapp simplepage
+
+- Create docker-compose file
+services:
+  web:
+    ports:
+      - 8000:8080
+    build: .
+    volumes: 
+      - ./static:/app/staticfiles
+    environment:
+      - DEBUG=False
+
+
+# Run docker compose 
+docker compose build
+docker compose up -d
+

@@ -1,0 +1,45 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\vlady\\Downloads\\06-Exercise-Docker-Compose-Resources\\04-Exercise-Docker-Compose-Resources\\Resources\\01TaskBoard-ASP.NET-App\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CC759849-6C9C-4CF7-94B0-40C679137CCC}|TaskBoard.WebApp\\TaskBoard.WebApp.csproj|c:\\users\\vlady\\downloads\\06-exercise-docker-compose-resources\\04-exercise-docker-compose-resources\\resources\\01taskboard-asp.net-app\\taskboard.webapp\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{CC759849-6C9C-4CF7-94B0-40C679137CCC}|TaskBoard.WebApp\\TaskBoard.WebApp.csproj|solutionrelative:taskboard.webapp\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "C:\\Users\\vlady\\Downloads\\06-Exercise-Docker-Compose-Resources\\04-Exercise-Docker-Compose-Resources\\Resources\\01TaskBoard-ASP.NET-App\\TaskBoard.WebApp\\Dockerfile",
+              "RelativeDocumentMoniker": "TaskBoard.WebApp\\Dockerfile",
+              "ToolTip": "C:\\Users\\vlady\\Downloads\\06-Exercise-Docker-Compose-Resources\\04-Exercise-Docker-Compose-Resources\\Resources\\01TaskBoard-ASP.NET-App\\TaskBoard.WebApp\\Dockerfile",
+              "RelativeToolTip": "TaskBoard.WebApp\\Dockerfile",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-04-02T08:36:51.412Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
