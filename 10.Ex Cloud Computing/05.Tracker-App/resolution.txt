@@ -1,0 +1,44 @@
+1) Install Azure CLI
+
+2) Create a docker image
+docker build -t tracker .
+
+3) Login in Azure CLI
+az login 
+
+4)
+- Create Resource group
+az group create --name trackerapprg --location italynorth 
+
+- Delete Resource group
+az group delete --name trackerapprg --yes --no-wait
+
+- Create Azure Container Registry (ACR)
+az acr create --resource-group trackerapprg --name trackerappvladorgds 
+
+- Login in the created ACR
+az acr login --name trackerappvladorgdss
+
+- Show info abput the ACR 
+az acr show --name trackerappvladorgdss
+
+- The loginServer is the full name of the ACR
+
+- Тази команда маркира (tag-ва) локалния Docker образ tarckerapp с нов етикет, така че да може да бъде качен в Azure Container Registry trackerappvladorgdss.azurecr.io под името trackerapp с версия v1
+docker tag trackerapp trackerappvladorgdss.azurecr.io/trackerapp:v1
+
+- Push 
+docker push trackerappvladorgdss.azurecr.io/trackerapp:v1
+
+-----------------------
+- създава променлива 
+$ACR_NAME='trackerappvladorgdss'
+$SERVICE_PRINCIPLE_NAME='trackervladossp'
+$ACR_REGISTRY_ID=$(az acr show --name $ACR_NAME --query "id" --output tsv)
+$PASSWORD=$(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --scopes $ACR_REGISTRY_ID --role acrpull --query "password" --output tsv)
+$USER_NAME=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME --query "[].appId" --output tsv)
+
+
+az container create --resource-group trackerapprg --name trackerapp-container --image trackerappvladorgdss.azurecr.io/trackerapp:v1 --cpu 1 --memory 1 --registry-login-server trackerappvladorgdss.azurecr.io --registry-username <service-principal-ID> --registry-password <service-principal-password> --ip-address Public --dns-name-label <aciDnsLabel> --ports 80
+
+
